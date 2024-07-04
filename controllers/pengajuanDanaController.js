@@ -1,4 +1,4 @@
-const { PengajuanDana, User, Method } = require("../models")
+const { PengajuanDana, User, Method, Division } = require("../models")
 
 class PengajuanDanaController {
     static getPengajuanDanaPage = async (_, res) => {
@@ -8,14 +8,19 @@ class PengajuanDanaController {
                 include: [{
                     model: User,
                     as: 'user',
-                    attributes: ['name']
+                    attributes: ['name'],
+                    include: {
+                        model: Division,
+                        as: 'division',
+                        attributes: ['divisionName']
+                    }
                 }, {
                     model: Method,
                     as: 'method',
                     attributes: ['methodName']
                 }]
             })
-
+            console.log(pengajuanDanas);
             res.render('pengajuanDana', { pengajuanDanas: pengajuanDanas })
         } catch (error) {
             res.render('500')
